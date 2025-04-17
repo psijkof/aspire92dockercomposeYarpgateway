@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.2.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>8d88154e-4e30-4143-a9a5-7d3932127d9f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\aspire92.ApiService\aspire92.ApiService.csproj" />
+    <ProjectReference Include="..\aspire92.Web\aspire92.Web.csproj" />
+    <ProjectReference Include="..\aspire92.YarpProxy\aspire92.YarpProxy.csproj" />
+    <ProjectReference Include="..\BIS.BPC.WebHost.Net9\BIS.BPC.WebHost.Net9.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.2.0" />
+    <PackageReference Include="Aspire.Hosting.Docker" Version="9.2.0-preview.1.25209.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="yarp\" />
+  </ItemGroup>
+
+</Project>

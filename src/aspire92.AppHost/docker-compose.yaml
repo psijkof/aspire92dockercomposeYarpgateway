@@ -1,0 +1,63 @@
+services:
+  apiservice:
+    image: "${APISERVICE_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8000"
+    ports:
+      - "8001:8000"
+      - "8003:8002"
+    networks:
+      - "aspire"
+  webfrontend:
+    image: "${WEBFRONTEND_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8004"
+      services__apiservice__http__0: "http://apiservice:8000"
+    ports:
+      - "8005:8004"
+      - "8007:8006"
+    depends_on:
+      apiservice:
+        condition: "service_started"
+    networks:
+      - "aspire"
+  bis-bpc-webhost-net9:
+    image: "${BIS_BPC_WEBHOST_NET9_IMAGE}"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8008"
+    ports:
+      - "8009:8008"
+      - "8011:8010"
+    networks:
+      - "aspire"
+  yarp:
+    image: "${YARP_IMAGE}"
+    build:
+      context: ../../
+      dockerfile: ./src/aspire92.YarpProxy/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - "aspire"
+    depends_on:
+      - apiservice
+      - webfrontend
+      - bis-bpc-webhost-net9
+networks:
+  aspire:
+    driver: "bridge"
