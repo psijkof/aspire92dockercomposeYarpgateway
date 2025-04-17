@@ -25,6 +25,6 @@ builder.AddProject<Projects.aspire92_YarpProxy>("yarp")
     .WaitFor(bpchost)
     ;
 
-builder.AddDockerComposePublisher();
+builder.AddDockerComposePublisher(options => options.DefaultContainerRegistry = "localhost:7000");
 
 await builder.Build().RunAsync();
