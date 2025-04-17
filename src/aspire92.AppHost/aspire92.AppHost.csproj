@@ -22,8 +22,4 @@
     <PackageReference Include="Aspire.Hosting.Docker" Version="9.2.0-preview.1.25209.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="yarp\" />
-  </ItemGroup>
-
 </Project>
