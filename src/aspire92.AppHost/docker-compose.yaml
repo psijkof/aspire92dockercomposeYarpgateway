@@ -48,16 +48,27 @@ services:
       context: ../../
       dockerfile: ./src/aspire92.YarpProxy/Dockerfile
     environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8012"
+      services__apiservice__http__0: "http://apiservice:8000"
+      services__webfrontend__http__0: "http://webfrontend:8004"
+      services__bis-bpc-webhost-net9__http__0: "http://bis-bpc-webhost-net9:8008"
       ASPNETCORE_URLS: "http://+:80;https://+:443"
     ports:
       - "443:443"
       - "80:80"
+    depends_on:
+      apiservice:
+        condition: "service_started"
+      webfrontend:
+        condition: "service_started"
+      bis-bpc-webhost-net9:
+        condition: "service_started"
     networks:
       - "aspire"
-    depends_on:
-      - apiservice
-      - webfrontend
-      - bis-bpc-webhost-net9
 networks:
   aspire:
     driver: "bridge"
