@@ -2,7 +2,7 @@
 
 ## "aspire92" sample
 
-## Aaspire CLI publish
+## Aspire CLI publish
 
 The aspire release 9.2 releases (in preview) the publish command for Docker Compose. [Official release link](https://devblogs.microsoft.com/dotnet/dotnet-aspire-92-is-now-available-with-new-ways-to-deploy/#publish-to-docker-compose-with-your-first-publisher-integration)
 
